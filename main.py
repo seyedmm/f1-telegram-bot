@@ -27,8 +27,7 @@ class TelegramUpdateBot:
         resp = requests.get(BASE_URL+f"updateMessage?chat_id={self.chat_id}&message_id={self.current_message_id}&text={util.pretty_output(self.position_list)}", proxies=util.PROXIES)
         return json.loads(resp.text)
 
-    def reset_session_and_drivers(self):
+    def fetch_session_and_drivers(self):
         self.current_session_key = util.get_last_session()
         self.driver_list = util.session_driver_list(self.current_session['session_key'])
-    
 
