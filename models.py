@@ -2,7 +2,7 @@ import requests
 import json
 import util
 from util import TG_BASE_URL as BASE_URL
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class TelegramUpdateBot:
@@ -43,12 +43,22 @@ class TelegramUpdateBot:
         self.last_update_time = datetime.now()
 
     def pretty_data(self) -> str:
-        output = "آخرین بروزرسانی: "+self.last_update_time.strftime("%H:%M:%S")+"\n"
+        output = "🕓آخرین بروزرسانی: "+self.last_update_time.strftime("%H:%M:%S")+"\n"
         output += self.current_meeting['meeting_official_name'] + "\n"
-        output += "رقابت: "+self.current_session['session_name']+"\n"
-        output += "موقعیت های رانندگان:\n"
+        output += "🏎️رقابت: "+self.current_session['session_name']+"\n"
+        output += "📈موقعیت های رانندگان:\n"
         for pos in sorted(self.position_list, key=lambda pos: pos['position']):
-            output += str(pos['position'])+": "+pos['driver']['name_acronym']+str(pos['driver']['driver_number'])+"\n"
+            if pos['position'] == 1 and datetime.now(timezone.utc)>pos['date']:
+                pos_str = '🏆 '
+            elif pos['position'] == 1:
+               pos_str = '🥇 ' 
+            elif pos['position'] == 2:
+               pos_str = '🥈 ' 
+            elif pos['position'] == 3:
+               pos_str = '🥉 ' 
+            else:
+                pos_str = str(pos['position'])+'. '
+            output += pos_str+pos['driver']['first_name']+" "+pos['driver']['last_name']+" ("+str(pos['driver']['driver_number'])+")\n"
         return output
     
     
