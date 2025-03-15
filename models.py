@@ -1,7 +1,7 @@
 import requests
 import json
 import util
-from util import TG_BASE_URL as BASE_URL
+from util import PROXIES, TG_BASE_URL as BASE_URL
 from datetime import datetime
 
 
@@ -25,6 +25,10 @@ class TelegramUpdateBot:
     def send_new_message(self):
         text = self.pretty_data()
         resp = requests.get(BASE_URL+f"sendMessage?chat_id={self.chat_id}&text={text}", proxies=util.PROXIES)
+        return json.loads(resp.text)
+
+    def tg_logout(self):
+        resp = requests.get(BASE_URL+'logout', proxies=util.PROXIES)
         return json.loads(resp.text)
 
     def fetch_session_and_drivers(self):
