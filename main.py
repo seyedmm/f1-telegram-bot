@@ -32,4 +32,5 @@ async def new_message():
     global tg_bot
     tg_bot.fetch_session_and_drivers()
     tg_bot.send_new_message()
+
 asyncio.run(app.serve())
