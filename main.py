@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from models import TelegramUpdateBot
 load_dotenv()
 
-tg_bot = TelegramUpdateBot(chat_id=int(getenv("CHAT_ID")))
+tg_bot = TelegramUpdateBot(chat_id=getenv("CHAT_ID"))
 
 def return_tg_bot():
     global tg_bot

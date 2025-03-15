@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class TelegramUpdateBot:
-    def __init__(self, chat_id: int):
+    def __init__(self, chat_id: str):
         self.chat_id=chat_id
         self.current_message_id=6
         self.last_new_message_time=0
