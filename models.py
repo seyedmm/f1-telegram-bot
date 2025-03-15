@@ -2,7 +2,7 @@ import requests
 import json
 import util
 from util import TG_BASE_URL as BASE_URL
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 
 class TelegramUpdateBot:
@@ -43,7 +43,7 @@ class TelegramUpdateBot:
         self.last_update_time = datetime.now()
 
     def pretty_data(self) -> str:
-        output = "🕓آخرین بروزرسانی: "+self.last_update_time.strftime("%H:%M:%S")+"\n"
+        output = "🕓آخرین بروزرسانی: "+self.last_update_time.astimezone(timezone(timedelta(hours=3,minutes=30))).strftime("%H:%M:%S")+"\n"
         output += self.current_meeting['meeting_official_name'] + "\n"
         output += "🏎️رقابت: "+self.current_session['session_name']+"\n"
         output += "📈موقعیت های رانندگان:\n"
