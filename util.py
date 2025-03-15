@@ -56,5 +56,11 @@ def get_last_drivers_position(session_key:int, driver_list: list[dict]):
 
 
 def get_last_session(year:int=datetime.now().year):
+    print("getting last session")
     resp = requests.get(BASE_URL+f"sessions?year={year}", proxies=PROXIES)
-    return sorted(json.loads(resp.text), key=(lambda ses: dateutil.parser.parse(ses["date_start"])))[-1]
+    json_resp = json.loads(resp.text)
+    return sorted(json_resp, key=(lambda ses: dateutil.parser.parse(ses["date_start"])))[-1]
+
+def get_meeting(meeting_key:int):
+    resp = requests.get(BASE_URL+f"meetings?meeting_key={meeting_key}", proxies=PROXIES)
+    return json.loads(resp.text)[0]
