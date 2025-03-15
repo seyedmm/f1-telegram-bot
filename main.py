@@ -1,12 +1,16 @@
-import json
-import requests
-import util
-from datetime import datetime
+import asyncio
 from os import getenv
+from aioclock import AioClock, Depends, Every
 from dotenv import load_dotenv
+from models import TelegramUpdateBot
 load_dotenv()
 
-chat_id = 1213079698
-msg_id = 3
-current_session = util.get_last_session()
-DRIVER_LIST = util.session_driver_list(current_session['session_key'])
+tg_bot = TelegramUpdateBot(chat_id=int(getenv("CHAT_ID")))
+app = AioClock()
+
+def return_tg_bot():
+    global tg_bot
+    return tg_bot
+
+
+asyncio.run(app.serve())
