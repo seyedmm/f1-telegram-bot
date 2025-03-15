@@ -9,7 +9,6 @@ load_dotenv()
 
 tg_bot = TelegramUpdateBot(chat_id=getenv("CHAT_ID"))
 
-
 @asynccontextmanager
 async def lifespan(app: AioClock):
     global tg_bot
@@ -28,4 +27,9 @@ async def update_message():
     tg_bot.fetch_new_positions()
     tg_bot.update_message(tg_bot.pretty_data())
 
+@app.task(trigger=Every(minutes=20))
+async def new_message():
+    global tg_bot
+    tg_bot.fetch_session_and_drivers()
+    tg_bot.send_new_message()
 asyncio.run(app.serve())
