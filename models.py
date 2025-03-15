@@ -1,7 +1,7 @@
 import requests
 import json
 import util
-from util import PROXIES, TG_BASE_URL as BASE_URL
+from util import TG_BASE_URL as BASE_URL
 from datetime import datetime
 
 
