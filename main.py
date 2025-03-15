@@ -1,6 +1,6 @@
 import asyncio
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from os import getenv
 from aioclock import AioClock, Every
 from dotenv import load_dotenv
@@ -30,7 +30,8 @@ async def update_message():
 @app.task(trigger=Every(minutes=20))
 async def new_message():
     global tg_bot
-    tg_bot.fetch_session_and_drivers()
-    tg_bot.send_new_message()
+    if datetime.now(timezone.utc) < tg_bot.current_session['date_end']:
+        tg_bot.fetch_session_and_drivers()
+        tg_bot.send_new_message()
 
 asyncio.run(app.serve())
