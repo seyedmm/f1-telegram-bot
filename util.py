@@ -6,8 +6,9 @@ from os import getenv
 from datetime import datetime
 load_dotenv()
 
-PROXIES = {"http":"http://127.0.0.1:2080",
-           "https":"http://127.0.0.1:2080"}
+#PROXIES = {"http":"http://127.0.0.1:2080",
+#           "https":"http://127.0.0.1:2080"}
+PROXIES = {}
 BASE_URL="https://api.openf1.org/v1/"
 TG_BASE_URL = f"https://api.telegram.org/bot{getenv("TG_TOKEN")}/"
 
