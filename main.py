@@ -9,9 +9,6 @@ load_dotenv()
 
 tg_bot = TelegramUpdateBot(chat_id=getenv("CHAT_ID"))
 
-def return_tg_bot():
-    global tg_bot
-    return tg_bot
 
 @asynccontextmanager
 async def lifespan(app: AioClock):
