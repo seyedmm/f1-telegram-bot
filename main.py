@@ -24,14 +24,14 @@ app = AioClock(lifespan=lifespan)
 async def update_message():
     global tg_bot
     print(datetime.now().strftime("%H:%M:%S"),"Updating")
-    tg_bot.fetch_new_positions()
+    if datetime.now(timezone.utc) < tg_bot.current_session['date_end']:
+        tg_bot.fetch_session_and_drivers()
+        tg_bot.fetch_new_positions()
     tg_bot.update_message(tg_bot.pretty_data())
 
 @app.task(trigger=Every(minutes=20))
 async def new_message():
     global tg_bot
-    if datetime.now(timezone.utc) < tg_bot.current_session['date_end']:
-        tg_bot.fetch_session_and_drivers()
-        tg_bot.send_new_message()
+    tg_bot.send_new_message()
 
 asyncio.run(app.serve())
