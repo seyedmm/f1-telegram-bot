@@ -111,3 +111,41 @@ class TelegramUpdateBot:
         return output
     
     
+    def fetch_new_positions(self):
+        """
+        Fetch latest driver positions in the current race and detect any overtakes.
+        This method updates position_list with the latest position information and
+        tracks any overtakes that occurred.
+        """
+        logging.debug("Fetching new driver positions")
+        new_positions = util.get_last_drivers_position(self.current_session['session_key'], self.driver_list)
+        
+        # Detect overtakes before updating position list
+        if hasattr(self, 'position_list') and self.position_list:
+            # Sort both lists by position for comparison
+            old_positions = sorted(self.position_list, key=lambda x: x['position'])
+            new_positions_sorted = sorted(new_positions, key=lambda x: x['position'])
+            
+            # Compare driver numbers at each position to detect changes
+            for old_pos, new_pos in zip(old_positions, new_positions_sorted):
+                if old_pos['driver_number'] != new_pos['driver_number']:
+                    # Find the old position of the driver who is now in this position
+                    old_pos_of_overtaker = next(
+                        (p for p in old_positions if p['driver_number'] == new_pos['driver_number']),
+                        None
+                    )
+                    
+                    if old_pos_of_overtaker and old_pos_of_overtaker['position'] > old_pos['position']:
+                        if not hasattr(self, 'overtakes'):
+                            self.overtakes = []
+                            
+                        self.overtakes.append({
+                            'date': new_pos['date'],
+                            'position': new_pos['position'],
+                            'overtaking_driver': new_pos['driver'],
+                            'overtaken_driver': old_pos['driver']
+                        })
+        
+        self.position_list = new_positions
+        self.last_update_time = datetime.now()
+
