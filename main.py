@@ -34,4 +34,5 @@ async def new_message():
     global tg_bot
     tg_bot.send_new_message()
 
-asyncio.run(app.serve())
+if __name__ == "__main__":
+    asyncio.run(app.serve())
