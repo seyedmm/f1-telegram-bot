@@ -128,3 +128,6 @@ def get_meeting(meeting_key:int):
     logging.debug(f"Fetching meeting info for meeting {meeting_key}")
     resp = requests.get(BASE_URL+f"meetings?meeting_key={meeting_key}", proxies=PROXIES)
     return json.loads(resp.text)[0]
+
+def get_driver_id(driver:dict):
+    return driver['name_acronym']+driver['driver_number']
