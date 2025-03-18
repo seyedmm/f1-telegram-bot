@@ -28,8 +28,13 @@ app = AioClock(lifespan=lifespan)
 async def update_message():
     global tg_bot
     if datetime.now(timezone.utc) < tg_bot.current_session['date_end']:
+        if not tg_bot.set_start_message:
+            tg_bot.start_message_id = tg_bot.current_message_id
+            tg_bot.set_start_message = True
         tg_bot.fetch_session_and_drivers()
         tg_bot.fetch_new_positions()
+    else:
+        tg_bot.set_start_message = False
     tg_bot.update_message(tg_bot.pretty_data())
     logging.debug("Updating message")
 

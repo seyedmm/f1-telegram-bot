@@ -31,6 +31,8 @@ class TelegramUpdateBot:
         """
         logging.info(f"Initializing TelegramUpdateBot for chat {chat_id}")
         self.chat_id=chat_id
+        self.set_start_message = False
+        self.start_message_id=6
         self.current_message_id=6
         self.last_new_message_time=0
         self.last_update_time=datetime(1,1,1)
@@ -96,6 +98,8 @@ class TelegramUpdateBot:
         output = "🕓آخرین بروزرسانی: "+self.last_update_time.astimezone(timezone(timedelta(hours=3,minutes=30))).strftime("%H:%M:%S")+"\n"
         output += self.current_meeting['meeting_official_name'] + "\n"
         output += "🏎️رقابت: "+self.current_session['session_name']+"\n"
+        if datetime.now(timezone.utc) < self.current_session['date_end']:
+            output += f'از پیام <a href="https://t.me/f1_livereport/{self.current_message_id}">{self.start_message_id}</a> تا پیام <a href="https://t.me/f1_livereport/{self.current_message_id}">{self.current_message_id}</a>\n'
         output += "📈موقعیت های رانندگان:\n"
         for pos in sorted(self.position_list, key=lambda pos: pos['position']):
             if pos['position'] == 1 and datetime.now(timezone.utc)>pos['date']:
