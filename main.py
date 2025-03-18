@@ -33,7 +33,7 @@ async def update_message():
     tg_bot.update_message(tg_bot.pretty_data())
     logging.debug("Updating message")
 
-@app.task(trigger=Every(minutes=20))
+@app.task(trigger=Every(minutes=10))
 async def new_message():
     global tg_bot
     logging.info("Sending a new message")
