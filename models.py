@@ -67,7 +67,7 @@ class TelegramUpdateBot:
         resp = requests.get(BASE_URL+f"sendMessage?chat_id={self.chat_id}&text={text}", proxies=util.PROXIES)
         json_resp = json.loads(resp.text)
         self.current_message_id = json_resp['result']['message_id']
-        return json_resp
+        return json_resp['result']
 
     def tg_logout(self):
         """
@@ -143,7 +143,6 @@ class TelegramUpdateBot:
                     )
                     
                     if old_pos_of_overtaker and old_pos_of_overtaker['position'] > old_pos['position']:
-                            
                         self.overtakes.append({
                             'date': new_pos['date'],
                             'position': new_pos['position'],
