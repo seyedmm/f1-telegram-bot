@@ -39,6 +39,7 @@ class TelegramUpdateBot:
         self.current_meeting={}
         self.driver_list=[]
         self.position_list=[]
+        self.overtakes = []
 
     def update_message(self, text):
         """
@@ -108,6 +109,11 @@ class TelegramUpdateBot:
             else:
                 pos_str = str(pos['position'])+'. '
             output += pos_str+pos['driver']['first_name']+" "+pos['driver']['last_name']+" ("+str(pos['driver']['driver_number'])+")\n"
+        if len(self.overtakes) > 0:
+            output += "\nسبقت ها:\n"
+            for ovrt in self.overtakes:
+                output += ovrt['date'].strftime('%H:%M:%S')+" رتبه "+ovrt['position']+": "+util.get_driver_id(ovrt['overtaking_driver'])+" از "+util.get_driver_id(ovrt['overtaken_driver'])
+            
         return output
     
     
@@ -119,6 +125,7 @@ class TelegramUpdateBot:
         """
         logging.debug("Fetching new driver positions")
         new_positions = util.get_last_drivers_position(self.current_session['session_key'], self.driver_list)
+        self.last_update_time = datetime.now()
         
         # Detect overtakes before updating position list
         if hasattr(self, 'position_list') and self.position_list:
@@ -136,8 +143,6 @@ class TelegramUpdateBot:
                     )
                     
                     if old_pos_of_overtaker and old_pos_of_overtaker['position'] > old_pos['position']:
-                        if not hasattr(self, 'overtakes'):
-                            self.overtakes = []
                             
                         self.overtakes.append({
                             'date': new_pos['date'],
@@ -147,5 +152,4 @@ class TelegramUpdateBot:
                         })
         
         self.position_list = new_positions
-        self.last_update_time = datetime.now()
 
