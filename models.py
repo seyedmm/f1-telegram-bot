@@ -92,7 +92,7 @@ class TelegramUpdateBot:
         self.current_meeting = util.get_meeting(self.current_session['meeting_key'])
         self.driver_list = util.session_driver_list(self.current_session['session_key'])
         self.last_update_time = datetime.now()
-        logging.debug(f"Current session: {self.current_session['official_name']}")
+        logging.debug(f"Current session: {self.current_meeting['meeting_official_name']}")
 
     def pretty_data(self) -> str:
         output = "🕓آخرین بروزرسانی: "+self.last_update_time.astimezone(timezone(timedelta(hours=3,minutes=30))).strftime("%H:%M:%S")+"\n"

@@ -13,7 +13,11 @@ PROXIES = {"http":"http://127.0.0.1:2080",
 
 # Base URLs for APIs
 BASE_URL="https://api.openf1.org/v1/"  # OpenF1 API
-TG_BASE_URL = f"https://api.telegram.org/bot{getenv("TG_TOKEN")}/"  # Telegram API
+if int(getenv("DEBUG")):
+    TOKEN=getenv("DEBUG_CHAT_ID")
+else:
+    TOKEN=getenv("CHAT_ID")
+TG_BASE_URL = f"https://api.telegram.org/bot{TOKEN}/"  # Telegram API
 
 
 def session_driver_list(session_key: int) -> list[dict]:
