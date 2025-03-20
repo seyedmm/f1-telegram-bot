@@ -17,6 +17,7 @@ async def lifespan(app: AioClock):
     global tg_bot
     logging.info("Startin the robot")
     tg_bot.fetch_session_and_drivers()
+    tg_bot.fetch_new_positions()
     tg_bot.send_new_message()
     logging.info("Started the robot")
     yield app
