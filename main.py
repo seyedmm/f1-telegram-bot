@@ -8,7 +8,11 @@ from dotenv import load_dotenv
 from models import TelegramUpdateBot
 load_dotenv()
 
-tg_bot = TelegramUpdateBot(chat_id=getenv("CHAT_ID"))
+if int(getenv("DEBUG")):
+    CHAT_ID=getenv("DEBUG_CHAT_ID")
+else:
+    CHAT_ID=getenv("CHAT_ID")
+tg_bot = TelegramUpdateBot(chat_id=CHAT_ID)
 
 logging.basicConfig(format="[%(asctime)s] %(levelname)s: %(message)s")
 
